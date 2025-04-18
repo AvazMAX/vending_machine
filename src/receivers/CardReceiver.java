@@ -1,15 +1,13 @@
 package receivers;
 
 import interfaces.PaymentReceiver;
-
 import java.util.Scanner;
 
 public class CardReceiver implements PaymentReceiver {
     private final Scanner scanner = new Scanner(System.in);
 
-
     @Override
-    public boolean processPayment() {
+    public int processPayment() {
         String cardNumber;
         while (true) {
             System.out.print("Введите номер карты (16 цифр): ");
@@ -24,20 +22,18 @@ public class CardReceiver implements PaymentReceiver {
         int otp;
         while (true) {
             System.out.print("Введите одноразовый пароль (OTP): ");
-            if (scanner.hasNextInt()) {
-                otp = scanner.nextInt();
+            String input = scanner.nextLine();
+            try {
+                otp = Integer.parseInt(input);
                 if (otp == 1234) {
-                    break;
+                    System.out.println("Оплата по карте прошла успешно.");
+                    return 100;
                 } else {
                     System.out.println("Неверный OTP.");
                 }
-            } else {
+            } catch (NumberFormatException e) {
                 System.out.println("OTP должен быть числом.");
-                scanner.next();
             }
         }
-
-        System.out.println("Оплата по карте прошла успешно.");
-        return true;
     }
 }

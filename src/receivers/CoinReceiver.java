@@ -1,22 +1,26 @@
 package receivers;
 
 import interfaces.PaymentReceiver;
-
 import java.util.Scanner;
 
 public class CoinReceiver implements PaymentReceiver {
     private final Scanner scanner = new Scanner(System.in);
 
     @Override
-    public boolean processPayment() {
+    public int processPayment() {
         System.out.println("Вставьте монеты (введите сумму): ");
-        double amount = scanner.nextDouble();
-        if (amount >= 1.0) {
-            System.out.println("Монеты приняты.");
-            return true;
-        } else {
-            System.out.println("Недостаточно средств. Попробуйте снова.");
-            return false;
+        while (true) {
+            try {
+                int amount = Integer.parseInt(scanner.nextLine());
+                if (amount >= 1) {
+                    System.out.println("Монеты приняты.");
+                    return (int) (amount);
+                } else {
+                    System.out.println("Минимальная сумма 1 сом. Попробуйте снова.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Неверный формат суммы. Попробуйте снова.");
+            }
         }
     }
 }
