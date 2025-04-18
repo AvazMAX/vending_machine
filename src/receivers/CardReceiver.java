@@ -10,18 +10,34 @@ public class CardReceiver implements PaymentReceiver {
 
     @Override
     public boolean processPayment() {
-        System.out.println("Введите номер карты: ");
-        String cardNumber = scanner.nextLine();
-
-        System.out.println("Введите одноразовый пароль (OTP): ");
-        String otp = scanner.nextLine();
-
-        if (cardNumber.length() == 16 && otp.equals("1234")) {
-            System.out.println("Оплата по карте прошла успешно.");
-            return true;
-        } else {
-            System.out.println("Ошибка оплаты картой.");
-            return false;
+        String cardNumber;
+        while (true) {
+            System.out.print("Введите номер карты (16 цифр): ");
+            cardNumber = scanner.nextLine().trim();
+            if (cardNumber.length() == 16 && cardNumber.matches("\\d+")) {
+                break;
+            } else {
+                System.out.println("Некорректный номер карты. Попробуйте снова.");
+            }
         }
+
+        int otp;
+        while (true) {
+            System.out.print("Введите одноразовый пароль (OTP): ");
+            if (scanner.hasNextInt()) {
+                otp = scanner.nextInt();
+                if (otp == 1234) {
+                    break;
+                } else {
+                    System.out.println("Неверный OTP.");
+                }
+            } else {
+                System.out.println("OTP должен быть числом.");
+                scanner.next();
+            }
+        }
+
+        System.out.println("Оплата по карте прошла успешно.");
+        return true;
     }
 }
